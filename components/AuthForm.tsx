@@ -23,6 +23,9 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getLoggedInUser, signIn, signUp } from "@/lib/actions/user.action";
 import signin from "@/app/(auth)/sign-in/page";
+import { toast } from "react-toastify";
+import PlaidLink from "./PlaidLink";
+
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
@@ -52,6 +55,8 @@ const AuthForm = ({ type }: { type: string }) => {
         const newUser = await signUp(data);
 
         setUser(newUser);
+        toast.success("Account created successfully")
+        
       }
       if (type === "sign-in") {
         const response = await signIn({
@@ -86,13 +91,16 @@ const AuthForm = ({ type }: { type: string }) => {
               {user
                 ? "Link your account to get started"
                 : "please enter your details "}
+                
             </p>
           </h1>
         </div>
       </header>
-      {user ? (
-        <div className="flex flex-col gap-4 ">{/*plaidLink*/}</div>
-      ) : (
+      {/* {user ? ( */}
+        <div className="flex flex-col gap-4 ">
+          <PlaidLink user={user} variant="primary"/>
+        </div>
+      {/* ) : ( */}
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -195,8 +203,7 @@ const AuthForm = ({ type }: { type: string }) => {
             </Link>
           </footer>
         </>
-      )}
-    </section>
+     </section>
   );
 };
 
